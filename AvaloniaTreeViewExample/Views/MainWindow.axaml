@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaTreeViewExample.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTreeViewExample.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaTreeViewExample">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+	<Window.Styles>
+		<Style Selector="TreeViewItem /template/ Border#SelectionBorder:pointerover">
+			<Setter Property="Background" Value="#E5F3FF"/>
+		</Style>
+		<Style Selector="TreeViewItem:selected /template/ Border#SelectionBorder">
+			<Setter Property="Background" Value="#CDE8FF"/>
+		</Style>		
+		<Style Selector="TreeViewItem">
+			<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+			<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+		</Style>
+	</Window.Styles>
+
+	<Grid RowDefinitions="50,*">
+		<TextBlock Text="{Binding Tree.SelectedItemPath}"></TextBlock>
+
+		<TreeView Grid.Row="1" x:Name="TreeExample" Items="{Binding Tree.Children}" x:DataType="vm:TreeViewExampleModel"  AutoScrollToSelectedItem="True" SelectionMode="Single">		
+			<TreeView.DataTemplates>
+				<TreeDataTemplate x:DataType="vm:TreeViewItemModel" ItemsSource="{Binding Children}">
+					<Grid ColumnDefinitions="20,Auto">
+						<Grid.ContextMenu>
+							<ContextMenu>
+								<MenuItem Header="_Create Child" Command="{CompiledBinding CreateCommand}">
+									<MenuItem.Icon>
+										<Path Width="18"
+										      Height="18"
+										      Data="M4,4H20A1,1 0 0,1 21,5V9A1,1 0 0,1 20,10H4A1,1 0 0,1 3,9V5A1,1 0 0,1 4,4M9,8H10V6H9V8M5,6V8H7V6H5M8,16H11V13H13V16H16V18H13V21H11V18H8V16Z"
+										      Fill="Black"
+										      Stretch="Uniform" 
+										      HorizontalAlignment="Center"/>
+									</MenuItem.Icon>
+								</MenuItem>
+								<MenuItem Header="_Delete" Command="{CompiledBinding DeleteCommand}">
+									<MenuItem.Icon>
+										<Path Width="18"
+											  Height="18"
+											  Data="M14.12,10.47L12,12.59L9.87,10.47L8.46,11.88L10.59,14L8.47,16.12L9.88,17.53L12,15.41L14.12,17.53L15.53,16.12L13.41,14L15.53,11.88L14.12,10.47M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9Z"
+											  Fill="#DD0000"
+											  Stretch="Uniform" 
+											  HorizontalAlignment="Center"/>
+									</MenuItem.Icon>
+								</MenuItem>
+							</ContextMenu>
+						</Grid.ContextMenu>
+	                    <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Fill="Transparent"/>
+	                    <Path Grid.Column="0"
+		                    Width="20"
+		                    Height="20"
+		                    Data="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"
+							Fill="Orange"
+		                    Stretch="Uniform" />
+						<TextBlock Grid.Column="1" Text="{Binding Header}" VerticalAlignment="Center" Margin="3,0,0,0"/>
+					</Grid>
+				</TreeDataTemplate>
+			</TreeView.DataTemplates>
+		</TreeView>
+	</Grid>
+</Window>
